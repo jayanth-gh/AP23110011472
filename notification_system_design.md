@@ -299,3 +299,8 @@ for n in top_10:
 ### Output
 
 ![Output](Stage6_output.png)
+
+
+git add .
+git commit -m "Final submission"
+git push
