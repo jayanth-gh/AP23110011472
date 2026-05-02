@@ -55,3 +55,60 @@ Content-Type: application/json
   "createdAt": "datetime"
 }
 ```
+
+
+## Stage 2
+
+### Database Choice
+
+PostgreSQL (relational database)
+
+---
+
+### Table Schema
+
+```sql
+CREATE TABLE notifications (
+    id SERIAL PRIMARY KEY,
+    userId INT,
+    title TEXT,
+    message TEXT,
+    type VARCHAR(20),
+    isRead BOOLEAN DEFAULT FALSE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+### Problems with Large Data
+
+* Slow queries
+* High latency due to full table scans
+
+---
+
+### Solutions
+
+* Add indexes on userId, isRead, createdAt
+* Use pagination (LIMIT, OFFSET)
+* Table partitioning for large datasets
+
+---
+
+### Queries
+
+```sql
+-- Get all notifications
+SELECT * FROM notifications WHERE userId = 123;
+
+-- Get unread notifications
+SELECT * FROM notifications 
+WHERE userId = 123 AND isRead = FALSE 
+ORDER BY createdAt DESC;
+
+-- Mark notification as read
+UPDATE notifications 
+SET isRead = TRUE 
+WHERE id = 101;
+```
