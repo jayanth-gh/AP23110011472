@@ -301,6 +301,9 @@ for n in top_10:
 ![Output](Stage6_output.png)
 
 
-git add .
-git commit -m "Final submission"
-git push
+
+
+## Note
+
+The commit author name appears as "sumancoder-cloud" due to prior Git configuration.
+The repository and submission belong to: **jayanth-gh**.
