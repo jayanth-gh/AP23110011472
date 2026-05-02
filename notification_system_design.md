@@ -172,3 +172,33 @@ FROM notifications
 WHERE type = 'Placement'
 AND createdAt >= NOW() - INTERVAL '7 days';
 ```
+
+## Stage 4
+
+### Problem
+
+Fetching notifications on every page load causes high database load and slow response time.
+
+---
+
+### Solutions
+
+* **Caching (Redis)**
+  Store frequently accessed notifications in cache to reduce database queries.
+
+* **Pagination**
+  Fetch limited records using LIMIT and OFFSET instead of all data.
+
+* **Lazy Loading**
+  Load notifications only when the user opens the notifications section.
+
+* **Real-time Updates**
+  Use WebSockets or SSE to push new notifications instead of polling.
+
+---
+
+### Trade-offs
+
+* Caching → Faster reads, but possible stale data
+* Pagination → Reduces load, but shows partial data
+* Real-time → Efficient, but increases system complexity
