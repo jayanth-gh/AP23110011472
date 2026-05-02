@@ -112,3 +112,63 @@ UPDATE notifications
 SET isRead = TRUE 
 WHERE id = 101;
 ```
+
+## Stage 3
+
+### Given Query
+
+```sql
+SELECT * FROM notifications
+WHERE studentID = 1042 AND isRead = false
+ORDER BY createdAt DESC;
+```
+
+---
+
+### Is it correct?
+
+Yes, it correctly fetches unread notifications for a student.
+
+---
+
+### Why is it slow?
+
+* No index on studentID, isRead, createdAt
+* Causes full table scan
+
+---
+
+### Optimization (Index)
+
+```sql
+CREATE INDEX idx_notifications 
+ON notifications(studentID, isRead, createdAt DESC);
+```
+
+---
+
+### Computation Cost
+
+* Without index: O(n)
+* With index: O(log n)
+
+---
+
+### Should we index every column?
+
+No:
+
+* Increases storage
+* Slows insert/update operations
+* Only index frequently queried columns
+
+---
+
+### Query (Placement notifications in last 7 days)
+
+```sql
+SELECT DISTINCT userId
+FROM notifications
+WHERE type = 'Placement'
+AND createdAt >= NOW() - INTERVAL '7 days';
+```
