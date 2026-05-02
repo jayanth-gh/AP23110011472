@@ -202,3 +202,50 @@ Fetching notifications on every page load causes high database load and slow res
 * Caching → Faster reads, but possible stale data
 * Pagination → Reduces load, but shows partial data
 * Real-time → Efficient, but increases system complexity
+
+
+## Stage 5
+
+### Issues in Current Implementation
+
+* Sequential processing → slow for large users (50,000)
+* No retry mechanism for failed emails
+* Email failure causes inconsistency
+* Tight coupling of DB and email operations
+
+---
+
+### Improved Approach
+
+* Use asynchronous processing (queue system)
+* Save to DB first (reliable)
+* Send emails via background workers
+* Add retry mechanism for failures
+
+---
+
+### Revised Pseudocode
+
+```python
+def notify_all(student_ids, message):
+    for student_id in student_ids:
+        save_to_db(student_id, message)     # store notification
+        queue_email(student_id, message)    # async email sending
+        push_to_app(student_id, message)    # real-time notification
+```
+
+---
+
+### Failure Handling
+
+* Track failed emails
+* Retry using background workers
+
+---
+
+### DB and Email Together?
+
+No:
+
+* DB write should be immediate and reliable
+* Email should be asynchronous and retryable
